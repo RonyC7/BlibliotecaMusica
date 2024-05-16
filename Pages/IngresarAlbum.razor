@@ -1,0 +1,42 @@
+﻿@page "/ingresar-album"
+@using BlibliotecaMusica.Servicios
+@inject ServicioBiblioteca ServicioBiblioteca
+
+<h3>Ingresar Nuevo Álbum</h3>
+
+<EditForm Model="nuevoAlbum" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="titulo">Título:</label>
+        <InputText id="titulo" @bind-Value="nuevoAlbum.Titulo" />
+    </div>
+    <div>
+        <label for="artista">Artista:</label>
+        <InputText id="artista" @bind-Value="nuevoAlbum.Artista" />
+    </div>
+    <div>
+        <label for="fechaPublicacion">Fecha de Publicación:</label>
+        <InputDate id="fechaPublicacion" @bind-Value="nuevoAlbum.FechaPublicacion" />
+    </div>
+
+    <button type="submit">Ingresar Álbum</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <p>@mensaje</p>
+}
+
+@code {
+    private Album nuevoAlbum = new Album();
+    private string mensaje;
+
+    private void HandleValidSubmit()
+    {
+        ServicioBiblioteca.IngresarAlbum(nuevoAlbum);
+        mensaje = "Álbum ingresado correctamente.";
+        nuevoAlbum = new Album(); // Limpiar el formulario
+    }
+}
